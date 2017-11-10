@@ -30,7 +30,7 @@ Checkout existing branch:
 
 	git checkout BRANCH-NAME
 
-Check status 
+Check status to check what branch you're on
 
 	git status
 

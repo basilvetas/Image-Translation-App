@@ -1,0 +1,3 @@
+translation_service/translation_service/__pycache__/
+translation_service/translation_service/config.py
+*.pyc

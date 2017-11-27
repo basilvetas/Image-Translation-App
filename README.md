@@ -1,5 +1,7 @@
 
 ----------To begin----------
+
+
 Create a file called key.txt and copy the API key for Clarifai into the file
 
 First install the client server globally with: 

@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 translation_service/translation_service/__pycache__/
 translation_service/translation_service/config.py
 *.pyc
+=======
+key.txt
+>>>>>>> b1249dad9ceae0950c7c0b873e7a969e44e48aa8

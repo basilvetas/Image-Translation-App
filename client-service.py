@@ -17,7 +17,7 @@ class ModelHandler(RequestHandler):
 	def post(self):
 		self.set_header("Content-Type", "text/plain")
 		url = self.get_body_argument('url')    				
-		prediction = predictImage(self.app, url)			
+		prediction = predictImage(self.app, url)
 		concepts = prediction['outputs'][0]['data']['concepts']
 		results = {}
 		for concept in concepts:	

@@ -1,26 +1,34 @@
 
 ----------To begin----------
 
+1. Create a file called key.txt and copy the API key for Clarifai into the file
 
-Create a file called key.txt and copy the API key for Clarifai into the file
+2. Create a file called config.txt in the translation_service/ directory and copy the following into the file, filling in your Google Translate API Key where instructed:
 
-First install the client server globally with: 
+	# API CREDENTIALS:
+	API_KEY="YOUR-API-KEY-GOES-HERE"
+
+3. Install the client server globally with: 
 
 	npm install http-server -g
 
-The Tornado Web Server is located in the file client-service.py. To start server on localhost:7777:
+4. The Image Recognition Tornado Web Server is located in the file client-service.py. To start server on localhost:7777:
 
 	python3 client-service.py
 
-(note sometimes the first time you run the server Clarifai API responds with an error -- if this happens just re-run it)
+5. The Translation Tornado Web Server is located in the file translation_service/translation_service/__main__.py. To start server on localhost:5001:
 
-The AngularJS Client is located in the file index.html. To start client on localhost:8080:
+	python3 -m translation_service
+
+6. The AngularJS Client is located in the file index.html. To start client on localhost:8080:
 
 	http-server
 
-Test URL: 
 
-	http://www.eatlovesavor.com/wp-content/uploads/2012/02/paris-cafe-croissant-coffee-and-newspaper.png
+
+
+
+
 
 
 ----------Git workflow----------

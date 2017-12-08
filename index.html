@@ -5,14 +5,21 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />        
 	  <title>Image Translation App</title>	  
 
-	  <!-- AngularJS + custom JavaScript -->
+	  <!-- AngularJS + LoDash + custom JavaScript -->
 	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+	  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>	  
 	  <script>
 	  	var app = angular.module('image-translation', []);			
 			app.controller('ImageTranslationCtrl', ['$scope', '$http', '$httpParamSerializerJQLike', 
 			function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {			  
-			  $scope.predict = function(url) {
-			  	
+			  
+			  $scope.$watch('concepts', function() {
+		      
+		    });
+
+			  $scope.predict = function(url, language) {
+
 			  	var req = {
 					 method: 'POST',
 					 url: 'http://localhost:7777/predict/',
@@ -22,11 +29,39 @@
 			    	},
 					 data: $httpParamSerializerJQLike({url: url}),
 					};
-			  	$http(req).then(function(success) {
-			  		$scope.concepts = success.data;			  		
+
+			  	$http(req).then(function(success) {			  				  					  		
+			  		var words = Object.keys(success.data);
+			  		var vals = Object.values(success.data);			  		
+
+			  		var req = {
+							method: 'POST',
+							url: 'http://localhost:5001/',
+							headers: {
+					      	'Content-Type': 'application/x-www-form-urlencoded', 
+					      	'Accept': 'application/json' 
+							},
+							data: {
+								words: words, 
+								source: 'en', 
+								target: language
+							},
+						};
+
+				  	$http(req).then(function(success) {
+
+							var translations = []			  		
+				  		_.each(success.data.data.translations, function(value, key) {
+	  						translations.push(Object.values(value)[0]);
+							});
+				  		
+				  		$scope.concepts = _.zip(words, translations, vals);
+						}, function(failure) {});
+
 					}, function(failure) {});
 			  }
-			}]);	  	
+			  
+			}]);
 	  </script>	
 
 	  <!-- Bootstrap + custom CSS -->
@@ -36,20 +71,127 @@
 		</style>
 		
 	</head>
-	<body ng-controller="ImageTranslationCtrl">
-			<div class="col-md-12">
-				<h1>Image Translation</h1><h3>Enter image URL below:</h3>
+	<body>
+			<div ng-controller="ImageTranslationCtrl" class="col-md-12">				
+				<h1>Image Translation</h1><h3>Enter image URL below and select language:</h3>
 				<form>
-					 <input type="text" ng-model="url" />
-					 <input type="submit" ng-click="predict(url)"/>
+					<input type="text" ng-model="url" />
+					<select ng-model="language">
+						<option id='af'>af</option>
+						<option id='sq'>sq</option>
+						<option id='am'>am</option>
+						<option id='ar'>ar</option>
+						<option id='hy'>hy</option>
+						<option id='az'>az</option>
+						<option id='eu'>eu</option>
+						<option id='be'>be</option>
+						<option id='bn'>bn</option>
+						<option id='bs'>bs</option>
+						<option id='bg'>bg</option>
+						<option id='ca'>ca</option>
+						<option id='ceb'>ceb</option>
+						<option id='zh-CN'>zh-CN</option>
+						<option id='zh-TW'>zh-TW</option>
+						<option id='co'>co</option>
+						<option id='hr'>hr</option>
+						<option id='cs'>cs</option>
+						<option id='da'>da</option>
+						<option id='nl'>nl</option>
+						<option id='en'>en</option>
+						<option id='eo'>eo</option>
+						<option id='et'>et</option>
+						<option id='fi'>fi</option>
+						<option id='fr'>fr</option>
+						<option id='fy'>fy</option>
+						<option id='gl'>gl</option>
+						<option id='ka'>ka</option>
+						<option id='de'>de</option>
+						<option id='el'>el</option>
+						<option id='gu'>gu</option>
+						<option id='ht'>ht</option>
+						<option id='ha'>ha</option>
+						<option id='haw'>haw</option>
+						<option id='iw'>iw</option>
+						<option id='hi'>hi</option>
+						<option id='hmn'>hmn</option>
+						<option id='hu'>hu</option>
+						<option id='is'>is</option>
+						<option id='ig'>ig</option>
+						<option id='id'>id</option>
+						<option id='ga'>ga</option>
+						<option id='it'>it</option>
+						<option id='ja'>ja</option>
+						<option id='jw'>jw</option>
+						<option id='kn'>kn</option>
+						<option id='kk'>kk</option>
+						<option id='km'>km</option>
+						<option id='ko'>ko</option>
+						<option id='ku'>ku</option>
+						<option id='ky'>ky</option>
+						<option id='lo'>lo</option>
+						<option id='la'>la</option>
+						<option id='lv'>lv</option>
+						<option id='lt'>lt</option>
+						<option id='lb'>lb</option>
+						<option id='mk'>mk</option>
+						<option id='mg'>mg</option>
+						<option id='ms'>ms</option>
+						<option id='ml'>ml</option>
+						<option id='mt'>mt</option>
+						<option id='mi'>mi</option>
+						<option id='mr'>mr</option>
+						<option id='mn'>mn</option>
+						<option id='my'>my</option>
+						<option id='ne'>ne</option>
+						<option id='no'>no</option>
+						<option id='ny'>ny</option>
+						<option id='ps'>ps</option>
+						<option id='fa'>fa</option>
+						<option id='pl'>pl</option>
+						<option id='pt'>pt</option>
+						<option id='pa'>pa</option>
+						<option id='ro'>ro</option>
+						<option id='ru'>ru</option>
+						<option id='sm'>sm</option>
+						<option id='gd'>gd</option>
+						<option id='sr'>sr</option>
+						<option id='st'>st</option>
+						<option id='sn'>sn</option>
+						<option id='sd'>sd</option>
+						<option id='si'>si</option>
+						<option id='sk'>sk</option>
+						<option id='sl'>sl</option>
+						<option id='so'>so</option>
+						<option id='es'>es</option>
+						<option id='su'>su</option>
+						<option id='sw'>sw</option>
+						<option id='sv'>sv</option>
+						<option id='tl'>tl</option>
+						<option id='tg'>tg</option>
+						<option id='ta'>ta</option>
+						<option id='te'>te</option>
+						<option id='th'>th</option>
+						<option id='tr'>tr</option>
+						<option id='uk'>uk</option>
+						<option id='ur'>ur</option>
+						<option id='uz'>uz</option>
+						<option id='vi'>vi</option>
+						<option id='cy'>cy</option>
+						<option id='xh'>xh</option>
+						<option id='yi'>yi</option>
+						<option id='yo'>yo</option>
+						<option id='zu'>zu</option>
+					</select> 
+					<input type="submit" ng-click="predict(url, language)"/>
 				</form>
-			  <h3 ng-if="concepts">
-			  		<div class="row" ng-repeat="(name, value) in concepts">
-			  			<div class="col-md-4"></div>
-			  			<div class="col-md-2">{{name}}:</div>
-			  			<div class="col-md-2">{{value}} %</div>
-			  			<div class="col-md-4"></div>
-			  		</div>			  					  				  				  	
+			  <h3 ng-if="concepts">			  	
+		  		<div class="row" ng-repeat="concept in concepts">
+		  			<div class="col-md-3"></div>
+		  			<div class="col-md-2">{{concept[0]}}</div>
+		  			<div class="col-md-2">{{concept[1]}}</div>
+		  			<div class="col-md-2">{{concept[2]}}%</div>
+		  			<div class="col-md-3"></div>
+		  		</div>			  					  				  				  	
 				</h3>
 			</div>			
 	</body>	

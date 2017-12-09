@@ -28,35 +28,47 @@ class MainHandler(RequestHandler):
     def post(self):      
       print(self.request.body);
       json_data = json.loads(self.request.body);
-      
-      print("----------GOT HERE----------");
-      print(json_data);
-
-      print("--------------------");
-
-
       words = json_data.get('words') # list of strings (even if one string sent as input by client)
-      source = json_data.get('source')
-      target = json_data.get('target')
+      lang1 = json_data.get('lang1')
+      lang2 = json_data.get('lang2')
 
-      print('[GET]\t Arguments: \n\t\twords: %s, \n\t\tsource: %s, \n\t\ttarget: %s' % (words, source, target))
+      print('[GET]\t Arguments: \n\t\twords: %s, \n\t\tsource: %s, \n\t\ttarget: %s' % (words, lang1, lang2))
 
       url = 'https://translation.googleapis.com/language/translate/v2'
 
-      data = {
-        'q': words, # string or list of strings
-        'source': source,
-        'target': target,
-        'format': 'text', # HTML or plain text
-        'key': API_KEY
-      }
+      if not(lang1 == 'en'):
+        data1 = {
+          'q': words, # string or list of strings
+          'source': 'en',
+          'target': lang1,
+          'format': 'text', # HTML or plain text
+          'key': API_KEY
+        }
+        r1 = requests.post(url=url, data=data1).json();
+        response1 = [val['translatedText'] for val in r1['data']['translations']];
+        print('[GET]\t Response: \n\t\t', pprint.pformat(response1))
+      else:
+        response1 = words;
 
-      r = requests.post(url=url, data=data);
-      response = r.json();
-      print('[GET]\t Response: \n\t\t', pprint.pformat(response))
+      if not(lang2 == 'en'):
+        data2 = {
+          'q': words, # string or list of strings
+          'source': 'en',
+          'target': lang2,
+          'format': 'text', # HTML or plain text
+          'key': API_KEY
+        }
+        r2 = requests.post(url=url, data=data2).json();
+        response2 = [val['translatedText'] for val in r2['data']['translations']];
+        print('[GET]\t Response: \n\t\t', pprint.pformat(response2))
+      else:
+        response2 = words;
 
-      # time.sleep(5)      
-      self.write(response)
+      # time.sleep(5) 
+
+      print('Words: \n\t\t', pprint.pformat(words))
+      
+      self.write(dict([('lang1', response1), ('lang2', response2)]))
 
 def make_app():
   return Application([

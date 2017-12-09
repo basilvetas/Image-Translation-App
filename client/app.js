@@ -8,7 +8,6 @@ function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {
 	var loadLanguages = function() {
 		$http.get("languages.json").then(function(success) {		
 			$scope.langList = success.data;
-			console.log($scope.langList);
 	  }, function(failure) {});	
 	}
 
@@ -17,6 +16,8 @@ function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {
   $scope.predict = function(url, source, target) {
 
   	$scope.url = url;
+  	$scope.lang1 = source.lang;
+  	$scope.lang2 = target.lang;
 
   	var req = {
 		 method: 'POST',
@@ -41,23 +42,21 @@ function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {
 				},
 				data: {
 					words: words, 
-					source: source, 
-					target: target
+					lang1: source.code, 
+					lang2: target.code
 				},
 			};
 
 	  	$http(req).then(function(success) {
-
-	  		console.log(success.data);
-
+	  		
 	  		var source = []			  		
-	  		_.each(success.data.source.data.translations, function(value, key) {
-					source.push(Object.values(value)[0]);
+	  		_.each(success.data.lang1, function(value, key) {
+					source.push(value);
 				});
 
 				var target = []			  		
-	  		_.each(success.data.target.data.translations, function(value, key) {
-					target.push(Object.values(value)[0]);
+	  		_.each(success.data.lang2, function(value, key) {
+					target.push(value);
 				});
 	  		
 	  		$scope.concepts = _.zip(source, target, vals);

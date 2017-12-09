@@ -29,40 +29,46 @@ class MainHandler(RequestHandler):
       print(self.request.body);
       json_data = json.loads(self.request.body);
       words = json_data.get('words') # list of strings (even if one string sent as input by client)
-      source = json_data.get('source')
-      target = json_data.get('target')
+      lang1 = json_data.get('lang1')
+      lang2 = json_data.get('lang2')
 
-      print('[GET]\t Arguments: \n\t\twords: %s, \n\t\tsource: %s, \n\t\ttarget: %s' % (words, source, target))
+      print('[GET]\t Arguments: \n\t\twords: %s, \n\t\tsource: %s, \n\t\ttarget: %s' % (words, lang1, lang2))
 
       url = 'https://translation.googleapis.com/language/translate/v2'
 
-      data1 = {
-        'q': words, # string or list of strings
-        'source': 'en',
-        'target': source,
-        'format': 'text', # HTML or plain text
-        'key': API_KEY
-      }
+      if not(lang1 == 'en'):
+        data1 = {
+          'q': words, # string or list of strings
+          'source': 'en',
+          'target': lang1,
+          'format': 'text', # HTML or plain text
+          'key': API_KEY
+        }
+        r1 = requests.post(url=url, data=data1).json();
+        response1 = [val['translatedText'] for val in r1['data']['translations']];
+        print('[GET]\t Response: \n\t\t', pprint.pformat(response1))
+      else:
+        response1 = words;
 
-      r1 = requests.post(url=url, data=data1);
-      response1 = r1.json();
-      print('[GET]\t Response: \n\t\t', pprint.pformat(response1))
-
-      data2 = {
-        'q': words, # string or list of strings
-        'source': 'en',
-        'target': target,
-        'format': 'text', # HTML or plain text
-        'key': API_KEY
-      }
-
-      r2 = requests.post(url=url, data=data2);
-      response2 = r2.json();
-      print('[GET]\t Response: \n\t\t', pprint.pformat(response2))
+      if not(lang2 == 'en'):
+        data2 = {
+          'q': words, # string or list of strings
+          'source': 'en',
+          'target': lang2,
+          'format': 'text', # HTML or plain text
+          'key': API_KEY
+        }
+        r2 = requests.post(url=url, data=data2).json();
+        response2 = [val['translatedText'] for val in r2['data']['translations']];
+        print('[GET]\t Response: \n\t\t', pprint.pformat(response2))
+      else:
+        response2 = words;
 
       # time.sleep(5) 
+
+      print('Words: \n\t\t', pprint.pformat(words))
       
-      self.write(dict([('source', response1), ('target', response2)]))
+      self.write(dict([('lang1', response1), ('lang2', response2)]))
 
 def make_app():
   return Application([

@@ -8,6 +8,9 @@ function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {
 	var loadLanguages = function() {
 		$http.get("languages.json").then(function(success) {		
 			$scope.langList = success.data;
+
+			$scope.language1 = $scope.langList[20];
+			$scope.language2 = $scope.langList[20];
 	  }, function(failure) {});	
 	}
 
@@ -15,10 +18,8 @@ function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {
 
   $scope.predict = function(url, source, target) {
 
-  	$scope.url = url;
-  	$scope.lang1 = source.lang;
-  	$scope.lang2 = target.lang;
-
+  	$scope.imageUrl = url;
+  	
   	var req = {
 		 method: 'POST',
 		 url: 'http://localhost:7777/predict/',
@@ -32,6 +33,9 @@ function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {
   	$http(req).then(function(success) {			  				  					  		
   		var words = Object.keys(success.data);
   		var vals = Object.values(success.data);			  		
+  		
+  		$scope.lang1 = source.lang;
+  		$scope.lang2 = target.lang;
 
   		var req = {
 				method: 'POST',
@@ -60,6 +64,7 @@ function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {
 				});
 	  		
 	  		$scope.concepts = _.zip(source, target, vals);
+
 			}, function(failure) {});
 
 		}, function(failure) {});

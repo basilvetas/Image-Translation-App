@@ -19,14 +19,34 @@
 	</head>
 	<body>
 			<div ng-controller="ImageTranslationCtrl" class="col-md-12">				
-				<h1>Image Translation</h1><h3>Enter image URL below and select language:</h3>
-				<form>
-					<input type="text" ng-model="url" />
-					<select ng-model="language">						
-						<option ng-repeat="value in validLanguages" id="{{value.code}}" value="{{value.code}}">{{value.language}}</option>	
-					</select> 
-					<input type="submit" ng-click="predict(url, language)"/>
-				</form>
+				<h1>Image Translation App</h1><h4>Submit an image below to see the contents of it translated to your languages of choice</h4>
+				<div class="row">
+					<div class="col-md-3"></div>
+			  	<div class="col-md-6">
+						<form>
+							<div class="row">
+								<div class="col-xs-12 form-group">
+									<label for="url">Image URL: </label>
+									<input type="text" id="url" class="form-control" ng-model="url" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-6 form-group">
+									<label for="language1">Source Language: </label>
+									<select id="language1" class="form-control" ng-model="language1" ng-options="value.code as value.lang for value in langList">
+									</select> 	
+								</div>	
+								<div class="col-xs-6 form-group">
+									<label for="language2">Target Language: </label>
+									<select id="language2" class="form-control" ng-model="language2" ng-options="value.code as value.lang for value in langList">
+									</select> 	
+								</div>						
+							</div>														
+							<input type="submit" class="btn btn-default" ng-click="predict(url, language1, language2)"/>							
+						</form>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
 			  <h3 ng-if="concepts">			 
 			  	<div class="row">
 			  		<div class="col-md-3"></div>
@@ -35,7 +55,16 @@
 			  		</div>			  		
 			  		<div class="col-md-3"></div>			  		
 			  	</div>
-			  	
+					
+					<div class="row">			  		
+			  		<div class="col-md-3"></div>
+		  			<div class="col-md-2">Source</div>
+		  			<div class="col-md-2">Target</div>
+		  			<div class="col-md-2">Confidence</div>
+		  			<div class="col-md-3"></div>
+		  		</div>
+
+
 		  		<div class="row" ng-repeat="concept in concepts">
 		  			<div class="col-md-3"></div>
 		  			<div class="col-md-2">{{concept[0]}}</div>

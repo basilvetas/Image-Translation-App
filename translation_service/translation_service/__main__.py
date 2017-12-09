@@ -28,13 +28,6 @@ class MainHandler(RequestHandler):
     def post(self):      
       print(self.request.body);
       json_data = json.loads(self.request.body);
-      
-      print("----------GOT HERE----------");
-      print(json_data);
-
-      print("--------------------");
-
-
       words = json_data.get('words') # list of strings (even if one string sent as input by client)
       source = json_data.get('source')
       target = json_data.get('target')
@@ -43,20 +36,33 @@ class MainHandler(RequestHandler):
 
       url = 'https://translation.googleapis.com/language/translate/v2'
 
-      data = {
+      data1 = {
         'q': words, # string or list of strings
-        'source': source,
+        'source': 'en',
+        'target': source,
+        'format': 'text', # HTML or plain text
+        'key': API_KEY
+      }
+
+      r1 = requests.post(url=url, data=data1);
+      response1 = r1.json();
+      print('[GET]\t Response: \n\t\t', pprint.pformat(response1))
+
+      data2 = {
+        'q': words, # string or list of strings
+        'source': 'en',
         'target': target,
         'format': 'text', # HTML or plain text
         'key': API_KEY
       }
 
-      r = requests.post(url=url, data=data);
-      response = r.json();
-      print('[GET]\t Response: \n\t\t', pprint.pformat(response))
+      r2 = requests.post(url=url, data=data2);
+      response2 = r2.json();
+      print('[GET]\t Response: \n\t\t', pprint.pformat(response2))
 
-      # time.sleep(5)      
-      self.write(response)
+      # time.sleep(5) 
+      
+      self.write(dict([('source', response1), ('target', response2)]))
 
 def make_app():
   return Application([

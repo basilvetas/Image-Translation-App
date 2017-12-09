@@ -1,0 +1,11 @@
+body { 
+	padding: 50px 50px; text-align: center; 
+}
+
+#input-image {
+	width: 100%;
+}
+
+.row {
+	margin: 20px;
+}

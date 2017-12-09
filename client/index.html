@@ -33,12 +33,12 @@
 							<div class="row">
 								<div class="col-md-6 form-group">
 									<label for="language1">Source Language: </label>
-									<select id="language1" class="form-control" ng-model="language1" ng-options="value as value.lang for value in langList">
+									<select id="language1" class="form-control" ng-model="language1" ng-options="value as value.lang for value in langList track by value.code">
 									</select> 
 								</div>	
 								<div class="col-md-6 form-group">
 									<label for="language2">Target Language: </label>
-									<select id="language2" class="form-control" ng-model="language2" ng-options="value as value.lang for value in langList">
+									<select id="language2" class="form-control" ng-model="language2" ng-options="value as value.lang for value in langList track by value.code">
 									</select> 		
 								</div>						
 							</div>														
@@ -51,7 +51,7 @@
 			  	<div class="row">
 			  		<div class="col-md-3"></div>
 			  		<div class="col-md-6">
-			  			<img id="input-image" ng-src="{{url}}" alt="Input Image" />
+			  			<img id="input-image" ng-src="{{imageUrl}}" alt="Input Image" />
 			  		</div>			  		
 			  		<div class="col-md-3"></div>			  		
 			  	</div>

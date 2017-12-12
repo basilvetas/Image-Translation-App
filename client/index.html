@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="image-translation">
+	<head>
+		<meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />        
+	  <title>Image Translation App</title>	  
+
+	  <!-- AngularJS + LoDash + custom JavaScript -->
+	  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
+	  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+	  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>	  
+	  <script src="app.js"></script>	  	  
+
+	  <!-- Bootstrap + custom CSS -->
+	  <link rel = "stylesheet" type = "text/css" href = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"/>  	  
+	  <link rel = "stylesheet" type = "text/css" href = "styles.css"/>  	  
+		
+		
+	</head>
+	<body>
+			<div ng-controller="ImageTranslationCtrl" class="container-fluid">				
+				<h1>Image Translation App</h1><h4>Submit an image below to see the contents of it translated to your languages of choice</h4>
+				<div class="row">
+					<div class="col-md-3"></div>
+			  	<div class="col-md-6">
+						<form>
+							<div class="row">
+								<div class="col-md-12 form-group">
+									<label for="url">Image URL: </label>
+									<input type="text" id="url" class="form-control" ng-model="url" />
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6 form-group">
+									<label for="language1">Source Language: </label>
+									<select id="language1" class="form-control" ng-model="language1" ng-options="value as value.lang for value in langList track by value.code">
+									</select> 
+								</div>	
+								<div class="col-md-6 form-group">
+									<label for="language2">Target Language: </label>
+									<select id="language2" class="form-control" ng-model="language2" ng-options="value as value.lang for value in langList track by value.code">
+									</select> 		
+								</div>						
+							</div>														
+							<input type="submit" class="btn btn-default" ng-click="predict(url, language1, language2)"/>							
+						</form>
+					</div>
+					<div class="col-md-3"></div>
+				</div>
+			  <h3 ng-if="concepts">			 
+			  	<div class="row">
+			  		<div class="col-md-3"></div>
+			  		<div class="col-md-6">
+			  			<img id="input-image" ng-src="{{imageUrl}}" alt="Input Image" />
+			  		</div>			  		
+			  		<div class="col-md-3"></div>			  		
+			  	</div>
+					
+					<div class="row">			  		
+			  		<div class="col-md-3"></div>
+		  			<div class="col-md-2">{{lang1}}</div>
+		  			<div class="col-md-2">{{lang2}}</div>
+		  			<div class="col-md-2">Confidence</div>
+		  			<div class="col-md-3"></div>
+		  		</div>
+
+		  		<hr />
+
+		  		<div class="row" ng-repeat="concept in concepts">
+		  			<div class="col-md-3"></div>
+		  			<div class="col-md-2">{{concept[0]}}</div>
+		  			<div class="col-md-2">{{concept[1]}}</div>
+		  			<div class="col-md-2">{{concept[2]}}%</div>
+		  			<div class="col-md-3"></div>
+		  		</div>			  					  				  				  	
+				</h3>
+			</div>			
+	</body>	
+</html>

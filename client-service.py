@@ -17,14 +17,24 @@ class ModelHandler(RequestHandler):
 	def post(self):
 		self.set_header("Content-Type", "text/plain")
 		url = self.get_body_argument('url')    				
-		prediction = predictImage(self.app, url)
-		concepts = prediction['outputs'][0]['data']['concepts']
-		results = {}
-		for concept in concepts:	
-			results[concept['name']] = round(concept['value']*100, 2)
+		count = self.get_body_argument('count')
+		print("Count: ", count)
+		if (int(count) == 0):
+			prediction = predictImage(self.app, url)
+			concepts = prediction['outputs'][0]['data']['concepts']
+			results = {}
+			for concept in concepts:
+				results[concept['name']] = round(concept['value']*100, 2)
+			print("Results: ", results)
+			self.write(results)
 
-		print("Results: ", results)	
-		self.write(results)
+		else:
+			dog_prediction = predictDog(url)
+			dog_breeds = dog_prediction['outputs'][0]['data']['concepts']
+			results = {}
+			for dog_breed in dog_breeds:
+				results[dog_breed['name']] = round(dog_breed['value']*100, 2)
+			self.write(results)
 
 # Deletes old image inputs and models from the app object so we can re-train without conflict
 # def clearApp(app):
@@ -51,6 +61,13 @@ def predictImage(app, url):
 	print("Predicting Image...")
 	model = app.models.get("general-v1.3")		
 	pred = model.predict_by_url(url=url)
+	return pred
+
+def predictDog(url):
+	print("Predicting Dog...")
+	app = ClarifaiApp(api_key='c5c78def8d574935aebbfd8da2c22ed3')
+	model = app.models.get('dogBreeds')
+	pred = model.predict_by_url(url = url)
 	return pred
 
 # Trains the Clarifai app model, passes app object into request handler

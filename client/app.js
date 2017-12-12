@@ -4,7 +4,10 @@ var app = angular.module('image-translation', []);
 
 app.controller('ImageTranslationCtrl', ['$scope', '$http', '$httpParamSerializerJQLike', 
 function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {			  
-
+	$scope.count = 0;
+	$scope.myFunction = function() {
+		$scope.count^=1;
+	}
 	var loadLanguages = function() {
 		$http.get("languages.json").then(function(success) {		
 			$scope.langList = success.data;
@@ -27,7 +30,7 @@ function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {
       	'Content-Type': 'application/x-www-form-urlencoded', 
       	'Accept': 'application/json' 
     	},
-		 data: $httpParamSerializerJQLike({url: url}),
+		 data: $httpParamSerializerJQLike({url: url, count: $scope.count}),
 		};
 
   	$http(req).then(function(success) {			  				  					  		

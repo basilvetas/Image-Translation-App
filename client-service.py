@@ -65,7 +65,7 @@ def predictImage(app, url):
 
 def predictDog(url):
 	print("Predicting Dog...")
-	app = ClarifaiApp(api_key='c5c78def8d574935aebbfd8da2c22ed3')
+	app = ClarifaiApp(api_key='c79df4e064e54afa88279b9600e63ea6')
 	model = app.models.get('dogBreeds')
 	pred = model.predict_by_url(url = url)
 	return pred

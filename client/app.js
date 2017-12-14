@@ -70,6 +70,29 @@ function ImageTranslationCtrl($scope, $http, $httpParamSerializerJQLike) {
 
 			}, function(failure) {});
 
+	  	var req_audio = {
+	  	     method: 'POST',
+	  	     url: 'http://localhost:5002/',
+	  	     headers: {
+	  	    'Content-Type': 'application/x-www-form-urlencoded', 
+	  	    'Accept': 'application/json' 
+	  	    },
+	  	    data: {
+	  	                words: words, 
+	  	                lang1: source.code, 
+	  	                lang2: target.code
+	  	            },
+	  	    };
+
+	  	$http(req_audio).then(function(success) {
+	  	    
+	  	    var source = new Audio('source.wav')
+	  	    var target = new Audio('target.wav')
+	  	    source.play()
+	  	    target.play()
+
+	  	}, function(failure) {});
+
 		}, function(failure) {});
 	}	 
 }]);

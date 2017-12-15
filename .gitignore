@@ -3,3 +3,4 @@ translation_service/__pycache__/
 translation_service/tests/
 translation_service/config.py
 translation_service/translation_service/__pycache__/
+dog_recog_service/dog_images/

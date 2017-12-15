@@ -1,6 +1,15 @@
-key.txt
+image_recog_service/__pycache__/
+image_recog_service/config.py
+
 translation_service/__pycache__/
 translation_service/tests/
 translation_service/config.py
-translation_service/translation_service/__pycache__/
+
+text_to_speech_service/__pycache__/
+text_to_speech_service/tests/
+text_to_speech_service/config.py
+
 dog_recog_service/dog_images/
+dog_recog_service/__pycache__/
+dog_recog_service/config.py
+

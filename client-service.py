@@ -36,26 +36,6 @@ class ModelHandler(RequestHandler):
 				results[dog_breed['name']] = round(dog_breed['value']*100, 2)
 			self.write(results)
 
-# Deletes old image inputs and models from the app object so we can re-train without conflict
-# def clearApp(app):
-# 	app.inputs.delete_all()
-# 	app.models.delete_all()
-# 	return app
-
-# Uses images from dogs.csv to train the model, returns the app object with trained model
-# def trainModel(app):	 
-# 	print("Training Model...") # train model
-# 	file = open("dogs.txt")
-# 	lines = file.readlines()		
-
-# 	for i, line in enumerate(lines):
-# 		url = line.strip()
-# 		app.inputs.create_image_from_url(url, image_id="id" + str(i), concepts=["dog"])		
-	
-# 	model = app.models.create("dogs", concepts=["dog"])		
-# 	model = model.train()
-# 	return app
-
 # Predicts whether the image url param contains a hot dog, returns dict of results
 def predictImage(app, url):
 	print("Predicting Image...")
@@ -72,9 +52,7 @@ def predictDog(url):
 
 # Trains the Clarifai app model, passes app object into request handler
 def make_app():	
-	app = ClarifaiApp(api_key=open("key.txt").read())
-	# app = clearApp(app)
-	# app = trainModel(app)		
+	app = ClarifaiApp(api_key=open("key.txt").read())			
 	print("Server running on localhost:7777")
 	return Application([
 		(r"/predict/", ModelHandler, dict(app = app)),

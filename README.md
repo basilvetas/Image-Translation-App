@@ -3,24 +3,28 @@
 
 1. Create a file called key.txt and copy the API key for Clarifai into the file
 
-2. Create a file called config.txt in the translation_service/ directory and copy the following into the file, filling in your Google Translate API Key where instructed:
-
-	# API CREDENTIALS:
+2. Create a file called config.py in the translation_service/ directory and copy the following into the file, filling in your Google Translate API Key where instructed:
+	
 	API_KEY="YOUR-API-KEY-GOES-HERE"
 
-3. Install the client server globally with: 
+3. Create a file called config.py in the text_to_speech_service/ directory and copy the following into the file, filling in your IBM API Key and Password where instructed:
+	
+	USERNAME="YOUR-API-KEY-GOES-HERE"
+	PASSWORD="YOUR-PASSWORD-GOES-HERE"
+
+4. Install the client server globally with: 
 
 	npm install http-server -g
 
-4. The Image Recognition Tornado Web Server is located in the file client-service.py. To start server on localhost:7777:
+5. The Image Recognition Tornado Web Server is located in the file client-service.py. To start server on localhost:7777:
 
 	python3 client-service.py
 
-5. The Translation Tornado Web Server is located in the file translation_service/translation_service/__main__.py. To start server on localhost:5001:
+6. The Translation Tornado Web Server is located in the file translation_service/translation_service/__main__.py. To start server on localhost:5001:
 
 	python3 -m translation_service
 
-6. The AngularJS Client is located in the file index.html. To start client on localhost:8080:
+7. The AngularJS Client is located in the file index.html. To start client on localhost:8080:
 
 	http-server
 
